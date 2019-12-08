@@ -1,0 +1,16 @@
+{
+  "ideas": [
+    {
+      "name": "test",
+      "description": "testing how this works",
+      "procon": [
+        { "isPro": true, "description": "good to test" },
+        { "isPro": false, "description": "takes time" }
+       ],
+      "votes": [
+        { "voter": "cheshire" },
+        { "voter": "joker" }
+       ]
+    }
+  ]
+}
