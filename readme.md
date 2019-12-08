@@ -7,6 +7,10 @@ A ChooJS project using Socket.IO and Express.
 - https://github.com/remy/nodemon - nodemon for reloading main node script
 - https://socket.io/get-started/chat/ - socketIO
 
+## Heroku
+- <https://devcenter.heroku.com/articles/node-websockets> - need to set `http-session-affinity` in Heroku with Socket.io
+- Need to have PORT for Express set by Heroku `process.env.PORT`
+
 ## Useful / Used
 - <https://stackoverflow.com/questions/8663246/javascript-timer-loop> - timer loop
 - <https://stackoverflow.com/questions/8431651/getting-a-diff-of-two-json-objects> - diff json

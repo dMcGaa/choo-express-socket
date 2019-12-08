@@ -8,15 +8,15 @@ export function view (state, emit) {
 
 function displayIdea(emit, idea) {
    return html`
-    <li>
-    <div>${idea.description}</div>
-    <div>
+    <li class="idea">
+    <div class="idea-descr">${idea.description}</div>
+    <div class="idea-procon">
       <ul>
         ${viewProConList(idea)}
         <button onclick=${displayAddProCon}>Add</button>
       </ul>
     </div>
-    <div>
+    <div class="idea-votes">
       ${uniqueVoteCount(idea.votes)}
       <button>Vote</button>
     </div>
