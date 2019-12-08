@@ -8,10 +8,11 @@ export function view (state, emit) {
 
 function displayIdea(emit, idea) {
    return html`
+    <li>
     <div>${idea.description}</div>
     <div>
       <ul>
-        ${idea.procon.map((pc) => viewProConList(pc))}
+        ${viewProConList(idea)}
         <button onclick=${displayAddProCon}>Add</button>
       </ul>
     </div>
@@ -19,6 +20,7 @@ function displayIdea(emit, idea) {
       ${uniqueVoteCount(idea.votes)}
       <button>Vote</button>
     </div>
+    </li>
   `
 
   function displayAddProCon() {
@@ -27,20 +29,27 @@ function displayIdea(emit, idea) {
 }
 
 
-function viewProConList(pc) {
-  return html`
-  <li>${viewSingleProCon(pc)}</li>
-  `;
+function viewProConList(idea) {
+  if(idea.procon) {
+    return html`
+      ${idea.procon.map((pc) => viewSingleProCon(pc))}
+    `;
+  }
 }
 
 function viewSingleProCon(pc) {
   return html`
+  <li>
   <div>${pc.description}</div>
+  </li>
   `;
 }
 
 function uniqueVoteCount(votesList) {
-  return html`
-  <div>count: ${votesList.length}</div>
-  `
+  if(votesList) {
+    return html`
+      <div>count: ${votesList.length}</div>
+    `
+  }
+  return html`<div>count: 0</div>`;
 }

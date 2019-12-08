@@ -24,9 +24,7 @@ function mainView (state, emit) {
           <div class="bv-procon">ProCon</div>
           <div class="bv-vote">Vote</div>
         </li>
-        <li>
-          ${idea.view(state, emit)}
-        </li>
+        ${idea.view(state, emit)}
         <li>
           <div>
             <button onclick=${addIdeaShown}>Add Idea</button>
@@ -55,12 +53,16 @@ function ideaInput(state, emit) {
   if(state.showIideaInputPanel) {
     return html`
       <div>INPUT IDEA</div>
+      <button onclick=${addIdea}>Add Idea</button>
       <button onclick=${addIdeaHidden}>Close</button>
     `
   }
   return html``
   function addIdeaHidden() {
     emit('display add', false)
+  }
+  function addIdea() {
+    emit('client voting update', {"description": "test desc", "name": "test name", "procon": [], "votes": []})
   }
 }
 
@@ -73,6 +75,15 @@ function countStore (state, emitter) {
   })
   emitter.on('set count', (count) => {
     state.count = count
+    emitter.emit('render')
+  })
+  emitter.on('client voting update', (idea) => {
+    state.ideas = [ ...state.ideas, idea ]
+    emitter.emit('render')
+    state.socket.emit('voting update', state.ideas);
+  })
+  emitter.on('voting update', (ideas) => {
+    state.ideas = [ ...ideas ]
     emitter.emit('render')
   })
 }
@@ -97,6 +108,10 @@ function socketIo (state, emitter) {
   var timeout = 1000;
   state.socket.on('chat message', function(msg){
     emitter.emit('set count', msg)
+  });
+  state.socket.on('voting update', function(ideas){
+    console.log("received ideas", ideas)
+    emitter.emit('voting update', ideas)
   });
   setInterval(myMethod, increment);
   function myMethod( )
