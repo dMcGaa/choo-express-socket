@@ -9,7 +9,7 @@
     "frontend": "npm run clean && parcel watch src/index.html",
     "parcel-build": "parcel build src/index.html",
     "start": "npm run prod",
-    "prod": "npm run clean && npm run parcel-build && nodemon index.js",
+    "prod": "npm run clean && npm run parcel-build && node index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",
