@@ -6,26 +6,27 @@
   "scripts": {
     "clean": "rimraf dist",
     "dev": "npm run clean && concurrently \"parcel watch src/index.html\" \"nodemon index.js\" --kill-others",
+    "frontend": "npm run clean && parcel watch src/index.html",
     "parcel-build": "parcel build src/index.html",
-    "start": "npm run clean && parcel watch src/index.html",
+    "start": "npm run prod",
     "prod": "npm run clean && npm run parcel-build && nodemon index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "choo": "^7.0.0",
     "choo-devtools": "^3.0.3",
     "express": "^4.17.1",
+    "nodemon": "^2.0.1",
+    "parcel": "^1.12.4",
     "ramda": "^0.26.1",
+    "rimraf": "^3.0.0",
+    "sass": "^1.23.7",
     "socket.io": "^2.3.0",
     "socket.io-client": "^2.3.0"
   },
   "devDependencies": {
-    "choo": "^7.0.0",
-    "concurrently": "^5.0.0",
-    "nodemon": "^2.0.1",
-    "parcel": "^1.12.4",
-    "rimraf": "^3.0.0",
-    "sass": "^1.23.7"
+    "concurrently": "^5.0.0"
   }
 }
