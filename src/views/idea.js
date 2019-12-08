@@ -1,12 +1,18 @@
 var html = require('choo/html')
 
-export function view (idea) {
+export function view (state, emit) {
   return html`
+    ${state.ideas.map((i) => displayIdea(emit, i) )}
+  `
+}
+
+function displayIdea(emit, idea) {
+   return html`
     <div>${idea.description}</div>
     <div>
       <ul>
         ${idea.procon.map((pc) => viewProConList(pc))}
-        <button>Add</button>
+        <button onclick=${displayAddProCon}>Add</button>
       </ul>
     </div>
     <div>
@@ -14,7 +20,12 @@ export function view (idea) {
       <button>Vote</button>
     </div>
   `
+
+  function displayAddProCon() {
+    emit('display add procon', true)
+  }
 }
+
 
 function viewProConList(pc) {
   return html`

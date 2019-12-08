@@ -7,7 +7,7 @@ var idea = require('./views/idea')
 
 var app = choo()
 app.use(devtools())
-app.use(initState)
+app.use(ideaStore)
 app.use(countStore)
 app.use(loadIdeas)
 app.use(socketIo)
@@ -25,30 +25,43 @@ function mainView (state, emit) {
           <div class="bv-vote">Vote</div>
         </li>
         <li>
-          ${state.ideas.map((i) => idea.view(i) )}
+          ${idea.view(state, emit)}
         </li>
         <li>
           <div>
-            <button>Add Idea</div>
+            <button onclick=${addIdeaShown}>Add Idea</button>
           </div>
         </li>
       </ul>
       <h1>count is ${state.count}</h1>
       <button onclick=${onclick}>Increment</button>
+      ${ ideaInput(state, emit) }
     </body>
   `
 
   function onclick () {
     emit('increment', 1)
   }
-}
-
-function initState (state, emitter) {
-  state.ideas = [];
+  function addIdeaShown() {
+    emit('display add', true)
+  }
 }
 
 function loadIdeas (state, emitter) {
   state.ideas = ideaData.ideas;
+}
+
+function ideaInput(state, emit) {
+  if(state.showIideaInputPanel) {
+    return html`
+      <div>INPUT IDEA</div>
+      <button onclick=${addIdeaHidden}>Close</button>
+    `
+  }
+  return html``
+  function addIdeaHidden() {
+    emit('display add', false)
+  }
 }
 
 function countStore (state, emitter) {
@@ -60,6 +73,19 @@ function countStore (state, emitter) {
   })
   emitter.on('set count', (count) => {
     state.count = count
+    emitter.emit('render')
+  })
+}
+
+function ideaStore (state, emitter) {
+  state.ideas = [];
+  state.ideaInputPanel = false;
+  emitter.on('display add', (isShown) => {
+    state.showIideaInputPanel = isShown
+    emitter.emit('render')
+  })
+  emitter.on('display add procon', (isShown) => {
+    state.showProconInput = isShown
     emitter.emit('render')
   })
 }
