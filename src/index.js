@@ -4,6 +4,7 @@ import {
   ideaVoteIncrement,
   ideaProConAddition,
   ideaProConFormInputDescription,
+  ideaProConFormSetIndex,
   ideaFormInputDescription,
 } from './choo-actions';
 
@@ -17,6 +18,7 @@ var choo = require('choo')
 var socket = require('socket.io-client')
 var ideaData = require('./data/ideas.json');
 var idea = require('./views/idea')
+var proconForm = require('./views/idea-arg-input')
 
 var app = choo()
 app.use(devtools())
@@ -55,6 +57,7 @@ function mainView (state, emit) {
       <h1>count is ${state.count}</h1>
       <button onclick=${onclick}>Increment</button>
       ${ ideaInput(state, emit) }
+      ${ proconForm.view(state, emit)}
     </body>
   `
 
@@ -120,7 +123,8 @@ function ideaStore (state, emitter) {
   state.showIdeaInputPanel = false;
   state.showProConInputPanel = false;
   state.proconFormInput = {
-    description: ""
+    description: "",
+    idx: null
   };
   state.ideaInputForm = {
     description: ""
@@ -149,6 +153,7 @@ function ideaStore (state, emitter) {
 
   // TODO fix this, don't want to directly manipulate array values, add only?
   emitter.on(ideaProConAddition, (payload) => {
+    console.log("payload", payload)
     const ideaIdx = payload.idx;
     const procon = payload.procon;
     const ideas = [...state.ideas];
@@ -163,9 +168,17 @@ function ideaStore (state, emitter) {
   //TODO dont directly modify state
   emitter.on(ideaProConFormInputDescription, (payload) => {
     state.proconFormInput = {
+      ...state.proconFormInput,
       description: payload
     }
     emitter.emit('render')
+  })
+
+  emitter.on(ideaProConFormSetIndex, (idx) => {
+    state.proconFormInput = {
+      ...state.proconFormInput,
+      idx: idx
+    }
   })
 
   //TODO dont directly modify state

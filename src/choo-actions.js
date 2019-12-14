@@ -12,6 +12,7 @@ const ideaProConAddition = `${IDEA}: idea procon addition`;
 const ideaProConVote = `${IDEA}: idea procon vote`;
 const ideaProConFormInputDescription = `${IDEA}: idea procon form input description`;
 const ideaFormInputDescription = `${IDEA}: idea form input description`;
+const ideaProConFormSetIndex = `${IDEA}: idea form set index`;
 
 module.exports = {
   isShownAddIdea, isShownAddProCon,
@@ -20,4 +21,5 @@ module.exports = {
   ideaProConAddition, ideaProConVote,
   ideaProConFormInputDescription,
   ideaFormInputDescription,
+  ideaProConFormSetIndex,
 }
