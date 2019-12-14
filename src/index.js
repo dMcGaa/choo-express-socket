@@ -1,3 +1,16 @@
+import { 
+  isShownAddIdea, isShownAddProCon,
+  countIncrement, countSet,
+  ideaVoteIncrement,
+  ideaProConAddition,
+  ideaProConFormInputDescription,
+  ideaFormInputDescription,
+} from './choo-actions';
+
+import {
+  socketIdeaUpdate
+} from './socket-actions';
+
 var html = require('choo/html')
 var devtools = require('choo-devtools')
 var choo = require('choo')
@@ -46,10 +59,10 @@ function mainView (state, emit) {
   `
 
   function onclick () {
-    emit('increment', 1)
+    emit(countIncrement, 1)
   }
   function addIdeaShown() {
-    emit('display add', true)
+    emit(isShownAddIdea, true)
   }
 }
 
@@ -58,37 +71,43 @@ function loadIdeas (state, emitter) {
 }
 
 function ideaInput(state, emit) {
-  if(state.showIideaInputPanel) {
+  if(state.showIdeaInputPanel) {
     return html`
       <div>INPUT IDEA</div>
+      <input type=text
+        oninput=${updateDescription}
+        value=${state.ideaInputForm.description} />
       <button class="add-idea" onclick=${addIdea}>Add Idea</button>
       <button onclick=${addIdeaHidden}>Close</button>
     `
   }
   return html``
   function addIdeaHidden() {
-    emit('display add', false)
+    emit(isShownAddIdea, false)
   }
   function addIdea() {
-    emit('client voting update', {"description": "test desc", "name": "test name", "procon": [], "votes": []})
+    emit('client voting update', {"description": state.ideaInputForm.description, "name": "test name", "procon": [], "votes": []})
+  }
+  function updateDescription(e) {
+    emit(ideaFormInputDescription, e.target.value)
   }
 }
 
 function countStore (state, emitter) {
   state.count = 0;
-  emitter.on('increment', function (count) {
+  emitter.on(countIncrement, function (count) {
     state.count += count
     emitter.emit('render')
     state.socket.emit('chat message', state.count);
   })
-  emitter.on('set count', (count) => {
+  emitter.on(countSet, (count) => {
     state.count = count
     emitter.emit('render')
   })
   emitter.on('client voting update', (idea) => {
     state.ideas = [ ...state.ideas, idea ]
     emitter.emit('render')
-    state.socket.emit('voting update', state.ideas);
+    state.socket.emit(socketIdeaUpdate, state.ideas);
   })
   emitter.on('voting update', (ideas) => {
     state.ideas = [ ...ideas ]
@@ -98,13 +117,62 @@ function countStore (state, emitter) {
 
 function ideaStore (state, emitter) {
   state.ideas = [];
-  state.ideaInputPanel = false;
-  emitter.on('display add', (isShown) => {
-    state.showIideaInputPanel = isShown
+  state.showIdeaInputPanel = false;
+  state.showProConInputPanel = false;
+  state.proconFormInput = {
+    description: ""
+  };
+  state.ideaInputForm = {
+    description: ""
+  };
+
+  emitter.on(isShownAddIdea, (isShown) => {
+    state.showIdeaInputPanel = isShown
     emitter.emit('render')
   })
-  emitter.on('display add procon', (isShown) => {
-    state.showProconInput = isShown
+
+  emitter.on(isShownAddProCon, (isShown) => {
+    state.showProConInputPanel = isShown
+    emitter.emit('render')
+  })
+
+  // TODO fix this, don't want to directly manipulate array values, add only?
+  emitter.on(ideaVoteIncrement, (ideaIdx) => {
+    const ideas = [...state.ideas];
+    const updatedIdea = {...state.ideas[ideaIdx]};
+    updatedIdea.votes.push({"name": "test"})
+    ideas[ideaIdx] = updatedIdea;
+    state.ideas = [...ideas]
+    emitter.emit('render')
+    state.socket.emit(socketIdeaUpdate, state.ideas);
+  })
+
+  // TODO fix this, don't want to directly manipulate array values, add only?
+  emitter.on(ideaProConAddition, (payload) => {
+    const ideaIdx = payload.idx;
+    const procon = payload.procon;
+    const ideas = [...state.ideas];
+    const updatedIdea = {...state.ideas[ideaIdx]};
+    updatedIdea.procon.push(procon)
+    ideas[ideaIdx] = updatedIdea;
+    state.ideas = [...ideas]
+    emitter.emit('render')
+    state.socket.emit(socketIdeaUpdate, state.ideas);
+  })
+
+  //TODO dont directly modify state
+  emitter.on(ideaProConFormInputDescription, (payload) => {
+    state.proconFormInput = {
+      description: payload
+    }
+    emitter.emit('render')
+  })
+
+  //TODO dont directly modify state
+  emitter.on(ideaFormInputDescription, (payload) => {
+    state.ideaInputForm = {
+      description: payload
+    }
     emitter.emit('render')
   })
 }
@@ -113,9 +181,9 @@ function socketIo (state, emitter) {
   state.socket = socket();
   var timeout = 1000;
   state.socket.on('chat message', function(msg){
-    emitter.emit('set count', msg)
+    emitter.emit(countSet, msg)
   });
-  state.socket.on('voting update', function(ideas){
+  state.socket.on(socketIdeaUpdate, function(ideas){
     console.log("received ideas", ideas)
     emitter.emit('voting update', ideas)
   });

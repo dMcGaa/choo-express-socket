@@ -2,6 +2,7 @@ var express = require('express');
 var app = require('express')();
 var http = require('http').createServer(app);
 var io = require('socket.io')(http);
+var { socketIdeaUpdate } = require('./src/socket-actions');
 
 app.use(express.static('dist'));
 
@@ -21,9 +22,9 @@ io.on('connection', function(socket){
     console.log('message: ' + msg);
     io.emit('chat message', msg);
   });
-  socket.on('voting update', function(msg){
-    console.log('voting update: ' + msg);
-    io.emit('voting update', msg);
+  socket.on(socketIdeaUpdate, function(msg){
+    console.log(`${socketIdeaUpdate}: ` + msg);
+    io.emit(socketIdeaUpdate, msg);
   });
 });
 

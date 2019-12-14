@@ -1,12 +1,19 @@
+import {
+  isShownAddProCon,
+  ideaVoteIncrement,
+  ideaProConAddition,
+  ideaProConFormInputDescription,
+} from '../choo-actions';
+
 var html = require('choo/html')
 
 export function view (state, emit) {
   return html`
-    ${state.ideas.map((i) => displayIdea(emit, i) )}
+    ${state.ideas.map((i, idx) => displayIdea(state, emit, i, idx) )}
   `
 }
 
-function displayIdea(emit, idea) {
+function displayIdea(state, emit, idea, idx) {
    return html`
     <li class="idea">
     <div class="idea-descr">${idea.description}</div>
@@ -18,13 +25,17 @@ function displayIdea(emit, idea) {
     </div>
     <div class="idea-votes">
       ${uniqueVoteCount(idea.votes)}
-      <button>Vote</button>
+      <button onclick=${updateVoteCount}>Vote</button>
     </div>
     </li>
+    ${ proConInput(state, emit, idx) }
   `
 
   function displayAddProCon() {
-    emit('display add procon', true)
+    emit(isShownAddProCon, true)
+  }
+  function updateVoteCount() {
+    emit(ideaVoteIncrement, idx); //idea.id
   }
 }
 
@@ -53,3 +64,27 @@ function uniqueVoteCount(votesList) {
   }
   return html`<div>count: 0</div>`;
 }
+
+function proConInput(state, emit, idx) {
+  if(state.showProConInputPanel) {
+    return html`
+      <div>INPUT PROCON</div>
+      <input type=text
+        oninput=${updateDescription}
+        value=${state.proconFormInput.description} />
+      <button class="add-idea" onclick=${addProCon}>Add Idea</button>
+      <button onclick=${addProConHidden}>Close</button>
+    `
+  }
+  return html ``
+  function addProConHidden() {
+    emit(isShownAddProCon, false)
+  }
+  function addProCon() {
+    emit(ideaProConAddition, {"idx": idx, "procon": {description: state.proconFormInput.description, votes:[]}})
+  }
+  function updateDescription(e) {
+    emit(ideaProConFormInputDescription, e.target.value)
+  }
+}
+
