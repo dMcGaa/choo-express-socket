@@ -13,7 +13,7 @@ function displayIdea(emit, idea) {
     <div class="idea-procon">
       <ul>
         ${viewProConList(idea)}
-        <button onclick=${displayAddProCon}>Add</button>
+        <button class="add-arg" onclick=${displayAddProCon}>Add Arg</button>
       </ul>
     </div>
     <div class="idea-votes">

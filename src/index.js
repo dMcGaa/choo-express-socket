@@ -18,19 +18,27 @@ app.mount('body')
 function mainView (state, emit) {
   return html`
     <body>
-      <ul class="bv-list">
-        <li class="bv-list-heading">
-          <div class="bv-idea">Idea</div>
-          <div class="bv-procon">ProCon</div>
-          <div class="bv-vote">Vote</div>
-        </li>
-        ${idea.view(state, emit)}
-        <li>
-          <div>
-            <button onclick=${addIdeaShown}>Add Idea</button>
-          </div>
-        </li>
-      </ul>
+      <header>Brainstorm Vote</header>
+      <div class="idea-pane">
+        <div class="topic">
+          <div>TOPIC</div>
+          <div>Description</div>
+        </div>
+
+        <ul class="bv-list">
+          <li class="bv-list-heading">
+            <div class="bv-idea">Idea</div>
+            <div class="bv-procon">Pros and Cons</div>
+            <div class="bv-vote">Vote</div>
+          </li>
+          ${idea.view(state, emit)}
+          <li>
+            <div>
+              <button class="action" onclick=${addIdeaShown}>Add Idea</button>
+            </div>
+          </li>
+        </ul>
+      </div>
       <h1>count is ${state.count}</h1>
       <button onclick=${onclick}>Increment</button>
       ${ ideaInput(state, emit) }
@@ -53,7 +61,7 @@ function ideaInput(state, emit) {
   if(state.showIideaInputPanel) {
     return html`
       <div>INPUT IDEA</div>
-      <button onclick=${addIdea}>Add Idea</button>
+      <button class="add-idea" onclick=${addIdea}>Add Idea</button>
       <button onclick=${addIdeaHidden}>Close</button>
     `
   }
@@ -103,8 +111,6 @@ function ideaStore (state, emitter) {
 
 function socketIo (state, emitter) {
   state.socket = socket();
-  var timer = 0;
-  var increment = 10;
   var timeout = 1000;
   state.socket.on('chat message', function(msg){
     emitter.emit('set count', msg)
@@ -113,13 +119,4 @@ function socketIo (state, emitter) {
     console.log("received ideas", ideas)
     emitter.emit('voting update', ideas)
   });
-  setInterval(myMethod, increment);
-  function myMethod( )
-  {
-    timer += increment
-    if(timer > timeout) {
-      // state.socket.emit('chat message', 'one second');
-      timer = 0;
-    }
-  }
 }

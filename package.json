@@ -6,8 +6,9 @@
   "scripts": {
     "clean": "rimraf dist",
     "dev": "npm run clean && concurrently \"parcel watch src/index.html\" \"nodemon index.js\" --kill-others",
-    "frontend": "npm run clean && parcel watch src/index.html",
+    "frontend": "npm run clean && npm run parcel-watch",
     "parcel-build": "parcel build src/index.html",
+    "parcel-watch": "parcel src/index.html",
     "start": "npm run prod",
     "prod": "npm run clean && npm run parcel-build && node index.js",
     "test": "echo \"Error: no test specified\" && exit 1"

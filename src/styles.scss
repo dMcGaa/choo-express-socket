@@ -1,12 +1,62 @@
 $clr-scheme-100: #000000;
 $clr-scheme-90: #0F0F0F;
+$clr-scheme-50: #666;
 $clr-scheme-10: #f5f5f5;
+
+$clr-header-bg: #006091;
+$clr-loud: #FF8000;
+$clr-quiet: #666;
+
 * {
   margin: 0; padding: 0; box-sizing: border-box;
 }
 
 body {
-  font: 13px Helvetica, Arial;
+  font: 16px Helvetica, Arial;
+}
+
+header {
+  background-color: $clr-header-bg;
+  color: $clr-scheme-10;
+  padding: 1em 1em;
+}
+
+button {
+  padding: 5px;
+  outline: 0;
+  cursor: pointer;
+  border-radius: 4px;
+  text-decoration: none;
+  &:-moz-focus-inner {
+    border: 0;
+  }
+  &:focus {
+    outline: none;
+  }
+  &.action, &.add-idea {
+    background-color: $clr-loud;
+    color: $clr-scheme-10;
+    &:active {
+      background-color: $clr-scheme-10;
+      color: $clr-loud;
+    }
+  }
+  &.add-arg {
+    border: none;
+    background-color: inherit;
+    color: $clr-loud;
+  }
+}
+
+.topic {
+  div:nth-child(1) {
+    color: $clr-loud;
+    font-size: 1.4em;
+  }
+  div:nth-child(2) {
+    color: $clr-quiet;
+  }
+  padding-bottom: 1em;
 }
 
 form {
@@ -20,6 +70,11 @@ form {
   li:nth-child(odd) { background: #eee; }
 }
 
+.bv-list-heading {
+  color: $clr-scheme-50;
+  border-bottom: 2px solid $clr-scheme-50;
+}
+
 .bv-list {
   display: flex;
   flex-direction: column;
@@ -30,6 +85,10 @@ form {
       flex: 1;
     }
   }
+}
+
+.idea-pane {
+  padding: 2em;
 }
 
 @media (max-width: 600px) {
