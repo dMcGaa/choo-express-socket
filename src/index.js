@@ -20,14 +20,22 @@ var ideaData = require('./data/ideas.json');
 var idea = require('./views/idea')
 var proconForm = require('./views/idea-arg-input')
 
-var app = choo()
-app.use(devtools())
-app.use(ideaStore)
-app.use(countStore)
-app.use(loadIdeas)
-app.use(socketIo)
-app.route('/', mainView)
-app.mount('body')
+setTimeout(initialize, 750);
+
+function initialize() {
+  var app = choo()
+  app.use(devtools())
+  app.use(ideaStore)
+  app.use(countStore)
+  app.use(loadIdeas)
+  app.use(socketIo)
+  app.route('/', mainView)
+  mountChoo(app)
+}
+
+function mountChoo(app) {
+  app.mount('body')
+}
 
 // ${state.ideas.map((i) => carDetails.view(i) )}
 function mainView (state, emit) {

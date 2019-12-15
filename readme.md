@@ -23,6 +23,10 @@ A ChooJS project using Socket.IO and Express.
 - <https://github.com/socketio/socket.io-client> - socket client
 - <https://github.com/facundofarias/awesome-websockets> - awesome list websockets
 
+### Styling and Design 
+- <https://codepen.io/neoberg/pen/kavnF> loading spinner
+- <https://www.seebeetee.com/css-loading-animations-from-codepen/> - loading animations css
+
 ## Other Cool Apps using WebSockets
 - <https://www.creativebloq.com/app-design/top-10-realtime-web-apps-5133752> - top 10 realtime web apps
 - <https://www.websocket.org/demos/todomvc/> - websocket todo
