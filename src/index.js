@@ -16,7 +16,7 @@ var html = require('choo/html')
 var devtools = require('choo-devtools')
 var choo = require('choo')
 var socket = require('socket.io-client')
-var ideaData = require('./data/ideas.json');
+var ideaData = require('./data/ideas-empty.json');
 var idea = require('./views/idea')
 var proconForm = require('./views/idea-arg-input')
 

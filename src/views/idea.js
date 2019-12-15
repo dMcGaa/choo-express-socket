@@ -8,8 +8,14 @@ var html = require('choo/html')
 
 export function view (state, emit) {
   return html`
+    ${displayIdeaEntryText(state)}
     ${state.ideas.map((i, idx) => displayIdea(state, emit, i, idx) )}
   `
+}
+
+function displayIdeaEntryText(state) {
+  if(state.ideas.length > 0 ) return html``;
+  return html`<div class="prompt-idea">Enter an Idea on the topic.</div>`
 }
 
 function displayIdea(state, emit, idea, idx) {
