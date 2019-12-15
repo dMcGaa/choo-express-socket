@@ -62,8 +62,6 @@ function mainView (state, emit) {
           </li>
         </ul>
       </div>
-      <h1>count is ${state.count}</h1>
-      <button onclick=${onclick}>Increment</button>
       ${ ideaInput(state, emit) }
       ${ proconForm.view(state, emit)}
     </body>
