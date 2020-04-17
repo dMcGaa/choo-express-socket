@@ -1,7 +1,7 @@
 #
 A ChooJS project using Socket.IO and Express.
 
-## Demo
+## [Demo](https://choo-socket.herokuapp.com/)
 
 ## Dev
 - https://github.com/remy/nodemon - nodemon for reloading main node script
