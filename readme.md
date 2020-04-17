@@ -1,7 +1,7 @@
 #
 A ChooJS project using Socket.IO and Express.
 
-## [Demo](https://choo-socket.herokuapp.com/)
+## [Demo](https://choo-socket.herokuapp.com/) - modern browsers please! heroku free dyno takes a bit of time to spin up.
 
 ## Dev
 - https://github.com/remy/nodemon - nodemon for reloading main node script
