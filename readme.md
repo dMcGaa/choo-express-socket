@@ -1,7 +1,14 @@
 #
 A ChooJS project using Socket.IO and Express.
 
-## [Demo](https://choo-socket.herokuapp.com/) - modern browsers please! heroku free dyno takes a bit of time to spin up.
+## [Demo](https://choo-socket.herokuapp.com/)
+- modern browsers please!
+- heroku free dyno takes a bit of time to spin up.
+- open multiple tabs and messages are synced between browsers
+
+## TODO
+- [] short-term persistence in backend
+- [] add database for long term persistence
 
 ## Dev
 - https://github.com/remy/nodemon - nodemon for reloading main node script
